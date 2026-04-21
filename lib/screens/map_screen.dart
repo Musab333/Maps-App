@@ -28,6 +28,23 @@ class MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.teal,
+        title: const Text(
+          'Maps App',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        centerTitle: true,
+        toolbarHeight: 70,
+        actions: [
+          IconButton(
+            onPressed: () {
+              // Add your action here
+            },
+            icon: const Icon(Icons.search, color: Colors.white),
+          ),
+        ],
+      ),
       body: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
@@ -38,7 +55,7 @@ class MapScreenState extends State<MapScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
         label: const Text('To the lake!'),
-        icon: const Icon(Icons.directions_boat),
+        icon: const Icon(Icons.location_searching, color: Colors.black54),
       ),
     );
   }
