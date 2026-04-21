@@ -54,8 +54,16 @@ class MapScreenState extends State<MapScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
-        label: const Text('To the lake!'),
-        icon: const Icon(Icons.location_searching, color: Colors.black54),
+        label: const Text(
+          'Go To',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        icon: const Icon(Icons.location_searching, color: Colors.white),
+        backgroundColor: Colors.teal,
       ),
     );
   }
