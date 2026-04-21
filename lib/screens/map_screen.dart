@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Maps/widgets/drawer_custam.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -36,6 +37,13 @@ class MapScreenState extends State<MapScreen> {
         ),
         centerTitle: true,
         toolbarHeight: 70,
+        elevation: 0,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     Scaffold.of(context).openDrawer();
+        //   },
+        //   icon: const Icon(Icons.menu, color: Colors.white),
+        // ),
         actions: [
           IconButton(
             onPressed: () {
@@ -45,6 +53,10 @@ class MapScreenState extends State<MapScreen> {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: DrawerCustom(), // Populate the Drawer in the next step.
+      ),
+
       body: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
