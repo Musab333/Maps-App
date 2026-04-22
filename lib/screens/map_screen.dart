@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:Maps/widgets/drawer_custam.dart';
+import 'package:Mapper/widgets/drawer_custam.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -13,6 +13,7 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  MapType _mapType = MapType.hybrid;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -38,12 +39,6 @@ class MapScreenState extends State<MapScreen> {
         centerTitle: true,
         toolbarHeight: 70,
         elevation: 0,
-        // leading: IconButton(
-        //   onPressed: () {
-        //     Scaffold.of(context).openDrawer();
-        //   },
-        //   icon: const Icon(Icons.menu, color: Colors.white),
-        // ),
         actions: [
           IconButton(
             onPressed: () {
@@ -54,14 +49,60 @@ class MapScreenState extends State<MapScreen> {
         ],
       ),
       drawer: Drawer(
-        child: DrawerCustom(), // Populate the Drawer in the next step.
+        child: DrawerCustom(
+          selectedMapType: _mapType,
+          onMapTypeChanged: (mapType) {
+            setState(() {
+              _mapType = mapType;
+            });
+          },
+        ),
       ),
 
       body: GoogleMap(
-        mapType: MapType.hybrid,
+        mapType: _mapType,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
+        },
+        // Set your Map ID.
+        mapId: 'my-map-id',
+        // Enable support for Advanced Markers.
+        markerType: GoogleMapMarkerType.advancedMarker,
+        markers: {
+          Marker(
+            markerId: const MarkerId('1'),
+            position: const LatLng(37.42796133580664, -122.085749655962),
+            infoWindow: const InfoWindow(
+              title: 'Marker 1',
+              snippet: 'This is marker 1',
+            ),
+            icon: BitmapDescriptor.defaultMarker,
+          ),
+        },
+        polygons: {
+          Polygon(
+            polygonId: const PolygonId('polygon_1'),
+            points: [
+              const LatLng(37.43296265331129, -122.08832357078792),
+              const LatLng(37.42796133580664, -122.085749655962),
+              const LatLng(37.43000000000000, -122.09000000000000),
+            ],
+            strokeColor: Colors.red,
+            fillColor: Colors.red.withOpacity(0.5),
+            strokeWidth: 2,
+          ),
+          Polygon(
+            polygonId: const PolygonId('polygon_2'),
+            points: [
+              const LatLng(37.43000000000000, -122.09000000000000),
+              const LatLng(37.42796133580664, -122.085749655962),
+              const LatLng(37.42500000000000, -122.08000000000000),
+            ],
+            strokeColor: Colors.blue,
+            fillColor: Colors.blue.withOpacity(0.5),
+            strokeWidth: 2,
+          ),
         },
       ),
       floatingActionButton: FloatingActionButton.extended(

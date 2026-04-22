@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DrawerCustom extends StatelessWidget {
-  const DrawerCustom({super.key});
+  const DrawerCustom({
+    super.key,
+    required this.selectedMapType,
+    required this.onMapTypeChanged,
+  });
+
+  final MapType selectedMapType;
+  final ValueChanged<MapType> onMapTypeChanged;
+
+  void _selectMapType(BuildContext context, MapType mapType) {
+    onMapTypeChanged(mapType);
+    Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: [
-          // 🔷 Header احترافي
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [Colors.blue, Colors.indigo]),
             ),
-            currentAccountPicture: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/user.png'),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: NetworkImage(""),
             ),
-            accountName: const Text("Musab AlMohamed"),
+            accountName: const Text("Musab Mohamed"),
             accountEmail: const Text("musab@email.com"),
           ),
 
@@ -28,14 +40,13 @@ class DrawerCustom extends StatelessWidget {
             onTap: () {},
           ),
 
-          // 💼 Work
-          ListTile(
-            leading: const Icon(Icons.work_outline),
-            title: const Text("Work"),
-            subtitle: const Text("Set your work location"),
-            onTap: () {},
-          ),
-
+          // // 💼 Work
+          // ListTile(
+          //   leading: const Icon(Icons.work_outline),
+          //   title: const Text("Work"),
+          //   subtitle: const Text("Set your work location"),
+          //   onTap: () {},
+          // ),
           const Divider(),
 
           // 🧭 Saved Places
@@ -46,21 +57,62 @@ class DrawerCustom extends StatelessWidget {
           ),
 
           // 🗺️ Map Type
-          ListTile(
+          ExpansionTile(
             leading: const Icon(Icons.map_outlined),
             title: const Text("Map Type"),
-            onTap: () {},
+            children: [
+              ListTile(
+                leading: const Icon(Icons.map),
+                title: const Text("Normal"),
+                onTap: () {
+                  _selectMapType(context, MapType.normal);
+                },
+                trailing: selectedMapType == MapType.normal
+                    ? const Icon(Icons.check, color: Colors.teal)
+                    : null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.satellite_alt),
+                title: const Text("Satellite"),
+                onTap: () {
+                  _selectMapType(context, MapType.satellite);
+                },
+                trailing: selectedMapType == MapType.satellite
+                    ? const Icon(Icons.check, color: Colors.teal)
+                    : null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.terrain),
+                title: const Text("Terrain"),
+                onTap: () {
+                  _selectMapType(context, MapType.terrain);
+                },
+                trailing: selectedMapType == MapType.terrain
+                    ? const Icon(Icons.check, color: Colors.teal)
+                    : null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.layers),
+                title: const Text("Hybrid"),
+                onTap: () {
+                  _selectMapType(context, MapType.hybrid);
+                },
+                trailing: selectedMapType == MapType.hybrid
+                    ? const Icon(Icons.check, color: Colors.teal)
+                    : null,
+              ),
+            ],
           ),
 
           const Divider(),
 
-          // 🌙 Dark Mode
-          SwitchListTile(
-            secondary: const Icon(Icons.dark_mode_outlined),
-            title: const Text("Dark Mode"),
-            value: false,
-            onChanged: (value) {},
-          ),
+          // // 🌙 Dark Mode
+          // SwitchListTile(
+          //   secondary: const Icon(Icons.dark_mode_outlined),
+          //   title: const Text("Dark Mode"),
+          //   value: false,
+          //   onChanged: (value) {},
+          // ),
 
           // ⚙️ Settings
           ListTile(
@@ -69,13 +121,12 @@ class DrawerCustom extends StatelessWidget {
             onTap: () {},
           ),
 
-          // ℹ️ About
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: const Text("About"),
-            onTap: () {},
-          ),
-
+          // // ℹ️ About
+          // ListTile(
+          //   leading: const Icon(Icons.info_outline),
+          //   title: const Text("About"),
+          //   onTap: () {},
+          // ),
           const Spacer(),
 
           // 🔚 Logout
